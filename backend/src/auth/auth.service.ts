@@ -4,16 +4,18 @@ import { UsersService } from 'src/users/users.service';
 import { Strategy } from 'passport-42';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable({})
 export default class AuthService extends PassportStrategy(Strategy, 'ft') {
   constructor(
     private readonly userService: UsersService,
     private readonly jwt: JwtService,
+    private readonly configService: ConfigService,
   ) {
     super({
-      clientID: process.env['FT_UID'],
-      clientSecret: process.env['FT_SECRET'],
+      clientID: configService.get<string>('FT_UID'),
+      clientSecret: configService.get<string>('FT_SECRET'),
       callbackURL: 'http://localhost:4000/auth/back',
     });
   }
