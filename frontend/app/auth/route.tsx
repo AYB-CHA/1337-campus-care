@@ -6,6 +6,6 @@ export const GET = (req: NextRequest) => {
   const cookieStore = cookies();
   let redirectUrl = new URL(process.env["FRONTEND_BASEURL"] ?? "");
   redirectUrl.pathname += "/";
-  cookieStore.set("token", token);
+  cookieStore.set("access_token", token);
   return NextResponse.redirect(redirectUrl);
 };
