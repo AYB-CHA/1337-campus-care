@@ -25,7 +25,7 @@ export default function Header() {
   else if (error) redirect("/error");
 
   return (
-    <div className="px-4 py-2 flex justify-between border-b items-center">
+    <div className="px-4 py-2 flex justify-between border-b items-center bg-white">
       <Logo />
       <div>
         <div className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">

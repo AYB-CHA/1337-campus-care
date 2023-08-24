@@ -7,7 +7,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <div className="h-screen flex">
       <Sidebar />
-      <section className="h-screen overflow-auto flex flex-col w-full">
+      <section className="h-screen overflow-auto flex flex-col w-full bg-gray-50">
         {children}
       </section>
     </div>

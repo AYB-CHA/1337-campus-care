@@ -1,5 +1,6 @@
+"use client";
+
 import {
-  ArrowLeftFromLine,
   Building,
   LayoutDashboard,
   Menu,
@@ -9,8 +10,12 @@ import {
   UserX,
 } from "lucide-react";
 import MenuButton from "./MenuButton";
+import { useSelectedLayoutSegment } from "next/navigation";
+import Link from "next/link";
 
-export default async function Sidebar() {
+export default function Sidebar() {
+  const segment = useSelectedLayoutSegment();
+
   return (
     <aside className="h-100 p-3 bg-gray-900 flex flex-col">
       <div>
@@ -19,12 +24,16 @@ export default async function Sidebar() {
         </MenuButton>
       </div>
       <div className="grow flex flex-col justify-center gap-4">
-        <MenuButton active tooltip="Dashboard">
-          <LayoutDashboard size={15} />
-        </MenuButton>
-        <MenuButton tooltip="Staff infra">
-          <MonitorDot size={15} />
-        </MenuButton>
+        <Link href="/">
+          <MenuButton active={segment === null} tooltip="Dashboard">
+            <LayoutDashboard size={15} />
+          </MenuButton>
+        </Link>
+        <Link href="/dashboard/staffinfra">
+          <MenuButton active={segment === "staffinfra"} tooltip="Staff infra">
+            <MonitorDot size={15} />
+          </MenuButton>
+        </Link>
         <MenuButton tooltip="Staff building">
           <Building size={15} />
         </MenuButton>

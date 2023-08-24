@@ -12,7 +12,7 @@ export default function MenuButton(
       }`}
     >
       {props.children}
-      <div className="absolute top-1/2 -translate-y-1/2 left-14  scale-0 opacity-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 group-hover:opacity-100 cursor-default whitespace-nowrap">
+      <div className="absolute top-1/2 z-50 -translate-y-1/2 left-14  scale-0 opacity-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 group-hover:opacity-100 cursor-default whitespace-nowrap">
         {props.tooltip}
       </div>
     </div>
