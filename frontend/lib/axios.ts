@@ -1,15 +1,11 @@
-"use server";
-import axios, { CreateAxiosDefaults } from "axios";
-import { cookies } from "next/headers";
+import Axios from "axios";
+import Cookies from "js-cookie";
 
-// let axiosDefaults: CreateAxiosDefaults = {
-//   baseURL: "http://backend:4000",
-//   timeout: 1000,
-// };
+const axios = Axios.create({
+  baseURL: process.env["NEXT_PUBLIC_BACKEND_BASEURL"],
+});
 
-// export const serverAxios = axios.create(axiosDefaults);
-// const cookieStore = cookies();
+axios.defaults.headers.common["Authorization"] =
+  "Bearer " + Cookies.get("access_token");
 
-// if (cookieStore.has("access_token"))
-//   serverAxios.defaults.headers.common.Authorization =
-//     "Bearer " + cookieStore.get("access_token")?.value;
+export default axios;

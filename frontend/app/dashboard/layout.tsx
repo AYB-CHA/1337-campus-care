@@ -1,12 +1,15 @@
-// import { serverAxios } from "@/lib/axios";
-import { isAxiosError } from "axios";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
-// import { authGuard } from "../auth/utils";
+import { authGuard } from "../auth/utils";
+import Sidebar from "./(components)/SideBar";
 
 export default async function RootLayout({ children }: PropsWithChildren) {
-  // let user = await authGuard();
-
-  return <div>{/* hey {user.data.username} {children} */}</div>;
+  authGuard();
+  return (
+    <div className="h-screen flex">
+      <Sidebar />
+      <section className="h-screen overflow-auto flex flex-col w-full">
+        {children}
+      </section>
+    </div>
+  );
 }
