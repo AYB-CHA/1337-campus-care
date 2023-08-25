@@ -1,7 +1,7 @@
 "use client";
 
 import { User } from "@/app/auth/types";
-import Logo from "./Logo";
+import Logo from "../../../components/Logo";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 import useSWR from "swr";

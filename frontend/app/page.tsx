@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { gustGuard } from "./auth/utils";
+import Logo from "@/components/Logo";
 
 export default async function Home() {
   gustGuard();
@@ -9,7 +10,7 @@ export default async function Home() {
       <div className="border-b">
         <div className="container py-2 flex justify-between items-center">
           <div className="flex text-gray-900 font-medium">
-            <span className="tracking-wide">1337CC</span>
+            <Logo />
           </div>
           <a href={`${process.env["BACKEND_BASEURL"]}/auth/login`}>
             <Button>Continue With 42 Intra</Button>

@@ -11,25 +11,20 @@ export default function Button({ children, icon, variant }: buttonProps) {
   let classes = "";
 
   if (variant == "primary")
-    classes = "bg-primary text-white hover:bg-primary-600";
+    classes =
+      "bg-primary text-white hover:bg-primary-600 border border-primary-500";
   else if (variant == "flat")
-    classes = "bg-white text-gray-900 hover:bg-gay-100 border border+gray-200";
+    classes = "bg-white text-gray-900 hover:bg-gray-100 border border-gray-200";
   if (variant)
     return (
       <button
         className={`inline-flex items-center justify-center rounded
      ring-offset-background transition-colors
     focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50
-    px-4 py-2.5 cursor-pointer text-sm select-none ${classes}`}
+    px-4 py-[9px] cursor-pointer text-sm select-none ${classes}`}
       >
         {children}
-        {icon ? (
-          <>
-            <span className="ml-2"> {icon}</span>
-          </>
-        ) : (
-          ""
-        )}
+        {icon ? <span className="ml-2"> {icon}</span> : ""}
       </button>
     );
 }
