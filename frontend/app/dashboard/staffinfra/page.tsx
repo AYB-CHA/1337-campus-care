@@ -3,6 +3,7 @@ import Header from "../(components)/Header";
 import { ChevronDown, MessageSquare, Send } from "lucide-react";
 import Link from "next/link";
 import Card from "./(components)/Card";
+import Tag from "./(components)/tag";
 
 export default function page() {
   return (
@@ -28,21 +29,11 @@ export default function page() {
                 Sort By
               </Button>
               <div className="w-px bg-gray-100"></div>
-              <button className="inline-flex items-center rounded border px-2.5 py-0.5 text-xs font-semibold border-b-2 border-b-green-500">
-                Fixed
-              </button>
-              <button className="inline-flex items-center rounded border px-2.5 py-0.5 text-xs font-semibold border-b-2 border-b-yellow-500">
-                On it
-              </button>
-              <button className="inline-flex items-center rounded border px-2.5 py-0.5 text-xs font-semibold border-b-2 border-b-red-500">
-                Wont fix
-              </button>
-              <button className="inline-flex items-center rounded border px-2.5 py-0.5 text-xs font-semibold border-b-2 border-b-red-400">
-                Duplicate
-              </button>
-              <button className="inline-flex items-center rounded border px-2.5 py-0.5 text-xs font-semibold border-b-2 border-b-gray-500">
-                Irrelevant
-              </button>
+              <Tag variant="success">Fixed</Tag>
+              <Tag variant="warning">On it</Tag>
+              <Tag variant="danger">Wont fix</Tag>
+              <Tag variant="risk">Duplicate</Tag>
+              <Tag variant="other">Irrelevant</Tag>
             </div>
           </div>
         </div>
