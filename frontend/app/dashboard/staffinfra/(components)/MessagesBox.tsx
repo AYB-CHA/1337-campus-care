@@ -5,13 +5,15 @@ import MyMessage from "./MyMessage";
 export default function MessagesBox() {
   return (
     <>
-      <div className="bg-white border-y p-2 py-3 text-gray-700 flex items-center">
+      <div className="bg-white border-b p-2 py-3 text-gray-700 flex items-center">
         <MessageSquare className="mr-4" size={20} />
         Double boost activation
       </div>
-      <div className="grow border-b p-4 flex flex-col gap-4 bg-white">
+      <div className="grow border-b p-4 flex flex-col gap-4 bg-white overflow-auto">
         <OtherMessage />
         <MyMessage />
+        <MyMessage />
+        <OtherMessage />
         <MyMessage />
         <OtherMessage />
       </div>

@@ -11,7 +11,7 @@ export default function page() {
     <div className="flex flex-col grow overflow-hidden">
       <div>
         <Header />
-        <div className="bg-white">
+        <div className="bg-white border-b">
           <div className="p-8">
             <div className="flex justify-between border-b pb-4 mb-4">
               <div className="w-64">
