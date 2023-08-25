@@ -1,10 +1,8 @@
 import Button from "@/components/Button";
 import Header from "../(components)/Header";
-import { ChevronDown, MessageSquare, Send } from "lucide-react";
-import Link from "next/link";
 import Card from "./(components)/Card";
-import Tag from "./(components)/tag";
 import MessagesBox from "./(components)/MessagesBox";
+import FilterBar from "./(components)/FilterBar";
 
 export default function page() {
   return (
@@ -25,17 +23,7 @@ export default function page() {
                 <Button>Add new ticket</Button>
               </div>
             </div>
-            <div className="flex gap-4">
-              <Button variant="flat" icon={<ChevronDown size={15} />}>
-                Sort By
-              </Button>
-              <div className="w-px bg-gray-100"></div>
-              <Tag variant="success">Fixed</Tag>
-              <Tag variant="warning">On it</Tag>
-              <Tag variant="danger">Wont fix</Tag>
-              <Tag variant="risk">Duplicate</Tag>
-              <Tag variant="other">Irrelevant</Tag>
-            </div>
+            <FilterBar />
           </div>
         </div>
       </div>

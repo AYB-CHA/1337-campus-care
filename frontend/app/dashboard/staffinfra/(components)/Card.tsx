@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Tag from "./tag";
+import Tag from "./Tag";
 
 export default function Card() {
   return (

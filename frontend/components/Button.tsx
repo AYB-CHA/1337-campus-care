@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+"use client";
+import { LegacyRef, ReactNode, forwardRef } from "react";
 
 type buttonProps = {
   children: ReactNode;
@@ -6,7 +7,10 @@ type buttonProps = {
   variant?: "primary" | "flat";
 };
 
-export default function Button({ children, icon, variant }: buttonProps) {
+export default forwardRef(function (
+  { children, icon, variant, ...props }: buttonProps,
+  forwardedRef: LegacyRef<HTMLButtonElement>
+) {
   variant ??= "primary";
   let classes = "";
 
@@ -22,9 +26,11 @@ export default function Button({ children, icon, variant }: buttonProps) {
      ring-offset-background transition-colors
     focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50
     px-4 py-[9px] cursor-pointer text-sm select-none ${classes}`}
+        ref={forwardedRef}
+        {...props}
       >
         {children}
         {icon ? <span className="ml-2"> {icon}</span> : ""}
       </button>
     );
-}
+});

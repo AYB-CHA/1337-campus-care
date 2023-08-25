@@ -1,4 +1,5 @@
 "use client";
+
 import Logo from "../../../components/Logo";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
@@ -36,7 +37,7 @@ export default function Header() {
       <Logo />
       <div>
         <DropdownMenu>
-          <DropdownMenuTrigger className="focus:outline-none">
+          <DropdownMenuTrigger>
             <div className="flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
               <img
                 className="aspect-square h-full w-full cursor-pointer"
