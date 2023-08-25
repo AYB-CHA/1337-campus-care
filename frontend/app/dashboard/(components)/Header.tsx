@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import useSWR from "swr";
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
+import { LogOut, Settings, User } from "lucide-react";
+import { User as UserType } from "@/app/auth/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,8 +15,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/DropDown";
-import { LogOut, Settings, User } from "lucide-react";
-import { User as UserType } from "@/app/auth/types";
 
 async function getUser(endpoint: string) {
   let response = await axios.get<UserType>(endpoint);

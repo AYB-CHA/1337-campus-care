@@ -13,7 +13,7 @@ export default function Tag({ children, variant }: TagProps) {
   if (variant == "other") variantClass = "border-b-gray-500";
   return (
     <button
-      className={`inline-flex items-center rounded border px-2.5 py-0.5 text-xs font-semibold border-b-2 ${variantClass}`}
+      className={`inline-flex items-center rounded border px-2.5 py-0.5 text-xs bg-white font-semibold border-b-2 ${variantClass}`}
     >
       {children}
     </button>
