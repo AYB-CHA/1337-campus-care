@@ -27,8 +27,8 @@ export default class AuthService extends PassportStrategy(Strategy, 'ft') {
       profile.username,
       profile.emails[0]?.value,
       profile._json.image.link,
-      profile.first_name,
-      profile.last_name,
+      profile.name.givenName,
+      profile.name.familyName,
     );
   }
 
