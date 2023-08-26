@@ -48,7 +48,7 @@ export default function NewTicket() {
               onupdatefiles={setFiles}
               allowMultiple={false}
               server={
-                process.env["NEXT_PUBLIC_BACKEND_BASEURL"] + "/uploadfile"
+                process.env["NEXT_PUBLIC_BACKEND_BASEURL"] + "/upload/file"
               }
               name="image"
               labelIdle="Drag & Drop an image if available."
