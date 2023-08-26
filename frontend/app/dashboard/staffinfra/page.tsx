@@ -3,6 +3,7 @@ import Header from "../(components)/Header";
 import Card from "./(components)/Card";
 import MessagesBox from "./(components)/MessagesBox";
 import FilterBar from "./(components)/FilterBar";
+import NewTicket from "./(components)/NewTicket";
 
 export default function page() {
   return (
@@ -20,7 +21,7 @@ export default function page() {
                 />
               </div>
               <div>
-                <Button>Add new ticket</Button>
+                <NewTicket />
               </div>
             </div>
             <FilterBar />
