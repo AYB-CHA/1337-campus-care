@@ -4,6 +4,7 @@ import Card from "./(components)/Card";
 import MessagesBox from "./(components)/MessagesBox";
 import FilterBar from "./(components)/FilterBar";
 import NewTicket from "./(components)/NewTicket";
+import Input from "@/components/Input";
 
 export default function page() {
   return (
@@ -14,11 +15,7 @@ export default function page() {
           <div className="p-8">
             <div className="flex justify-between border-b pb-4 mb-4">
               <div className="w-64">
-                <input
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block p-2.5 w-full"
-                  type="text"
-                  placeholder="Search"
-                />
+                <Input placeholder="Search" type="text" />
               </div>
               <div>
                 <NewTicket />
