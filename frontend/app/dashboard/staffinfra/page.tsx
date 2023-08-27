@@ -27,7 +27,7 @@ export default function page() {
       </div>
       <div className="flex grow overflow-hidden">
         <div className="h-full grow p-8 overflow-auto">
-          <div className="grid grid-cols-4 gap-6">
+          <div className="grid grid-cols-6 gap-6">
             <Card />
             <Card />
             <Card />
@@ -36,9 +36,9 @@ export default function page() {
             <Card />
           </div>
         </div>
-        <div className="h-full w-1/4 overflow-hidden flex flex-col border-l">
-          <MessagesBox />
-        </div>
+        <MessagesBox />
+        {/* <div className="h-full w-1/4 overflow-hidden flex flex-col border-l">
+        </div> */}
       </div>
     </div>
   );
