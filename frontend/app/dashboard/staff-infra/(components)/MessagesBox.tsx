@@ -19,9 +19,7 @@ export default function MessagesBox() {
   return (
     <div>
       <Sheet>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
+        <SheetTrigger asChild>{/* <Button>Open</Button> */}</SheetTrigger>
         <SheetContent className="w-full sm:max-w-full sm:w-[700px] p-0">
           <div className="flex flex-col h-full">
             <div className="p-4 text-gray-900 border-b flex items-center justify-between">

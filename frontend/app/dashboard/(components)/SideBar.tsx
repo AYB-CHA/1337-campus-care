@@ -29,8 +29,8 @@ export default function Sidebar() {
             <LayoutDashboard size={15} />
           </MenuButton>
         </Link>
-        <Link href="/dashboard/staffinfra">
-          <MenuButton active={segment === "staffinfra"} tooltip="Staff infra">
+        <Link href="/dashboard/staff-infra">
+          <MenuButton active={segment === "staff-infra"} tooltip="Staff infra">
             <MonitorDot size={15} />
           </MenuButton>
         </Link>

@@ -11,12 +11,34 @@ datasource db {
 }
 
 model User {
-  id         String   @unique @default(uuid())
-  firstname  String?
-  lastname   String?
-  username   String   @unique
-  email      String   @unique
-  avatar     String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id                  String             @unique @default(uuid())
+  firstname           String?            @db.VarChar(100)
+  lastname            String?            @db.VarChar(100)
+  username            String             @unique
+  email               String             @unique
+  avatar              String?            @db.VarChar(255)
+  staff_infar_tickets StaffInfraTicket[]
+  created_at          DateTime           @default(now())
+  updated_at          DateTime           @updatedAt
+}
+
+model StaffInfraTicket {
+  id          String                 @unique @default(uuid())
+  title       String                 @db.VarChar(255)
+  description String
+  image       String?                @db.VarChar(255)
+  User        User                   @relation(fields: [user_id], references: [id])
+  user_id     String
+  status      StaffInfraTicketStatus @default(NEW)
+  created_at  DateTime               @default(now())
+  updated_at  DateTime               @updatedAt
+}
+
+enum StaffInfraTicketStatus {
+  NEW
+  FIXED
+  ON_IT
+  WONT_FIX
+  DUBLICATE
+  IRRELEEVANT
 }

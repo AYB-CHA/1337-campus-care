@@ -11,7 +11,7 @@ export default function dashboard() {
         <div className="container pt-16">
           <h1 className="text-center text-2xl mb-16">Welcome, Ayoub Chaaoui</h1>
           <div className="grid grid-cols-4 gap-6">
-            <Link href="/dashboard/staffinfra">
+            <Link href="/dashboard/staff-infra">
               <StartLink title="Staff infra">
                 <MonitorDot size={40} />
               </StartLink>
