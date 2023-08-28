@@ -21,7 +21,7 @@ export default function Card({ data }: CardProps) {
         </div>
         <div className="aspect-[14/9] relative">
           <img
-            className="h-full w-full absolute"
+            className="h-full w-full absolute object-cover"
             src={
               data.image
                 ? process.env["NEXT_PUBLIC_BACKEND_BASEURL"] +
@@ -33,7 +33,7 @@ export default function Card({ data }: CardProps) {
           <div className="absolute top-2 left-2">
             <Tag variant="success">New</Tag>
           </div>
-          <div className="px-2 bg-gradient-to-t from-white to-transparent absolute bottom-0 w-full h-16 flex items-center text-sm text-gray-700">
+          <div className="px-2 bg-gradient-to-t bg-grad from-60% from-white to-transparent absolute bottom-0 w-full h-16 flex items-center text-sm text-gray-700">
             {data.description}.
           </div>
         </div>

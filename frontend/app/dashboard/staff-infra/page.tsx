@@ -7,6 +7,7 @@ import NewTicket from "./(components)/NewTicket";
 import Input from "@/components/Input";
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
+import useSWR from "swr";
 
 export type TicketType = {
   id: string;
@@ -20,11 +21,13 @@ export type TicketType = {
   };
 };
 
+async function getTickets(endpoint: string) {
+  let response = await axios.get<TicketType[]>(endpoint);
+  return response.data;
+}
+
 export default function page() {
-  const [tickets, setTickets] = useState<TicketType[]>([]);
-  useEffect(() => {
-    axios.get("/staff-infra").then((response) => setTickets(response.data));
-  }, []);
+  const { data: tickets, isLoading } = useSWR("/staff-infra", getTickets);
 
   return (
     <div className="flex flex-col grow overflow-hidden">
@@ -47,9 +50,11 @@ export default function page() {
       <div className="flex grow overflow-hidden">
         <div className="h-full grow p-8 overflow-auto">
           <div className="grid grid-cols-1  lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-6">
-            {tickets.map((ticket, index) => (
-              <Card key={index} data={ticket} />
-            ))}
+            {isLoading
+              ? "loading..."
+              : tickets?.map((ticket, index) => (
+                  <Card key={index} data={ticket} />
+                ))}
           </div>
         </div>
         <MessagesBox />

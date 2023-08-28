@@ -7,7 +7,7 @@ export class StaffInfraService {
   async getAllTickets() {
     let posts = await this.prisma.staffInfraTicket.findMany({
       orderBy: {
-        created_at: 'asc',
+        created_at: 'desc',
       },
       select: {
         id: true,
