@@ -4,10 +4,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class StaffInfraService {
   constructor(private readonly prisma: PrismaService) {}
-  async getAllTickets() {
+  async getAllTickets(dateSort: 'desc' | 'asc') {
     let posts = await this.prisma.staffInfraTicket.findMany({
       orderBy: {
-        created_at: 'desc',
+        created_at: dateSort,
       },
       select: {
         id: true,

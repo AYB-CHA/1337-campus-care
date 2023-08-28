@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -20,8 +21,10 @@ export class StaffInfraController {
 
   @UseGuards(AuthGuard)
   @Get('/')
-  async all() {
-    return await this.staffInfraService.getAllTickets();
+  async all(@Query('sort') sort: string | undefined) {
+    return await this.staffInfraService.getAllTickets(
+      sort == 'desc' ? sort : 'asc',
+    );
   }
 
   @Post('/')

@@ -8,7 +8,6 @@ import Input from "@/components/Input";
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import useSWR from "swr";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 export type TicketType = {
   id: string;
@@ -22,17 +21,26 @@ export type TicketType = {
   };
 };
 
-async function getTickets(endpoint: string) {
-  let response = await axios.get<TicketType[]>(endpoint);
+type TicketRequestType = {
+  endpoint: string;
+  sort: string;
+};
+
+async function getTickets(options: TicketRequestType) {
+  let response = await axios.get<TicketType[]>(
+    options.endpoint + "?sort=" + options.sort
+  );
+
   return response.data;
 }
 
 export default function page() {
+  const [sort, setSort] = useState<string>("desc");
   const {
     data: tickets,
     isLoading,
     mutate,
-  } = useSWR("/staff-infra", getTickets);
+  } = useSWR({ endpoint: "staff-infra", sort }, getTickets);
 
   return (
     <div className="flex flex-col grow overflow-hidden">
@@ -48,7 +56,7 @@ export default function page() {
                 <NewTicket mutator={mutate} />
               </div>
             </div>
-            <FilterBar />
+            <FilterBar sort={sort} setSort={setSort} />
           </div>
         </div>
       </div>

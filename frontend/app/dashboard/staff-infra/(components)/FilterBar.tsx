@@ -12,7 +12,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
 } from "@/components/DropDown";
-export default function FilterBar() {
+
+export default function FilterBar({
+  sort,
+  setSort,
+}: {
+  sort: string;
+  setSort: (value: string) => void;
+}) {
   return (
     <div className="flex gap-4">
       <DropdownMenu>
@@ -24,11 +31,11 @@ export default function FilterBar() {
         <DropdownMenuContent className="w-60" side="right" sideOffset={5}>
           <DropdownMenuLabel>Sort by</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value="date">
-            <DropdownMenuRadioItem value="date">
+          <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>
+            <DropdownMenuRadioItem value="asc">
               Date (Ascending )
             </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="date-rev">
+            <DropdownMenuRadioItem value="desc">
               Date (Descending)
             </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
