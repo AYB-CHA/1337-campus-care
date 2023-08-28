@@ -21,7 +21,7 @@ import { isAxiosError } from "axios";
 
 registerPlugin(FilePondPluginImagePreview);
 
-export default function NewTicket() {
+export default function NewTicket({ mutator }: { mutator: any }) {
   const [files, setFiles] = useState<FilePondFile[]>();
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
@@ -41,6 +41,7 @@ export default function NewTicket() {
       await axios.post("/staff-infra/", { title, description, image });
       setTitle("");
       setDescription("");
+      mutator();
       setOpen(false);
     } catch (error) {
       if (isAxiosError(error)) {

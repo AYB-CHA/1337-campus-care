@@ -27,7 +27,11 @@ async function getTickets(endpoint: string) {
 }
 
 export default function page() {
-  const { data: tickets, isLoading } = useSWR("/staff-infra", getTickets);
+  const {
+    data: tickets,
+    isLoading,
+    mutate,
+  } = useSWR("/staff-infra", getTickets);
 
   return (
     <div className="flex flex-col grow overflow-hidden">
@@ -40,7 +44,7 @@ export default function page() {
                 <Input placeholder="Search" type="text" />
               </div>
               <div>
-                <NewTicket />
+                <NewTicket mutator={mutate} />
               </div>
             </div>
             <FilterBar />
@@ -48,13 +52,17 @@ export default function page() {
         </div>
       </div>
       <div className="flex grow overflow-hidden">
-        <div className="h-full grow p-8 overflow-auto">
-          <div className="grid grid-cols-1  lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-6">
-            {isLoading
-              ? "loading..."
-              : tickets?.map((ticket, index) => (
-                  <Card key={index} data={ticket} />
-                ))}
+        <div className="grow p-8 overflow-auto h-full">
+          <div className="grid grid-cols-1  lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-6 relative min-h-full">
+            {isLoading ? (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                LOADING
+              </div>
+            ) : (
+              tickets?.map((ticket, index) => (
+                <Card key={index} data={ticket} />
+              ))
+            )}
           </div>
         </div>
         <MessagesBox />
