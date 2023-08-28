@@ -21,9 +21,13 @@ export class StaffInfraController {
 
   @UseGuards(AuthGuard)
   @Get('/')
-  async all(@Query('sort') sort: string | undefined) {
+  async all(
+    @Query('sort') sort: string | undefined,
+    @Query('search') search: string | undefined,
+  ) {
     return await this.staffInfraService.getAllTickets(
       sort == 'desc' ? sort : 'asc',
+      search ?? '',
     );
   }
 

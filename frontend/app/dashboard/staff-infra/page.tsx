@@ -24,23 +24,28 @@ export type TicketType = {
 type TicketRequestType = {
   endpoint: string;
   sort: string;
+  search: string;
 };
 
 async function getTickets(options: TicketRequestType) {
   let response = await axios.get<TicketType[]>(
-    options.endpoint + "?sort=" + options.sort
+    options.endpoint + "?sort=" + options.sort + "&search=" + options.search
   );
-
   return response.data;
 }
 
 export default function page() {
   const [sort, setSort] = useState<string>("desc");
+  const [searchQuery, setSearchQuery] = useState("");
+
   const {
     data: tickets,
     isLoading,
     mutate,
-  } = useSWR({ endpoint: "staff-infra", sort }, getTickets);
+  } = useSWR(
+    { endpoint: "staff-infra", sort, search: searchQuery },
+    getTickets
+  );
 
   return (
     <div className="flex flex-col grow overflow-hidden">
@@ -50,7 +55,11 @@ export default function page() {
           <div className="p-8">
             <div className="flex justify-between border-b pb-4 mb-4">
               <div className="w-64">
-                <Input placeholder="Search" type="text" />
+                <Input
+                  placeholder="Search"
+                  type="text"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
               <div>
                 <NewTicket mutator={mutate} />
