@@ -17,7 +17,6 @@ export class UploadController {
   @Post('/file')
   @UseInterceptors(
     FileInterceptor('image', {
-      dest: './upload',
       storage: diskStorage({
         filename: (req, file, callback) => {
           let error: null | Error = null;
@@ -29,7 +28,7 @@ export class UploadController {
           );
         },
         destination: (req, file, callback) => {
-          callback(null, './upload/');
+          callback(null, './public/upload');
         },
       }),
     }),

@@ -32,6 +32,9 @@ module.exports = {
           950: "#1A0040",
         },
       },
+      screens: {
+        "3xl": "2200px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

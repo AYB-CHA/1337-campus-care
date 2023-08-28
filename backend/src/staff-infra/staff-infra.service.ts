@@ -9,8 +9,15 @@ export class StaffInfraService {
       orderBy: {
         created_at: 'asc',
       },
+      select: {
+        id: true,
+        image: true,
+        title: true,
+        description: true,
+        created_at: true,
+        User: { select: { username: true, id: true } },
+      },
     });
-    console.log(posts);
     return posts;
   }
   async addNewTicket(

@@ -8,6 +8,8 @@ import { User } from '@prisma/client';
 @Controller('staff-infra')
 export class StaffInfraController {
   constructor(private readonly staffInfraService: StaffInfraService) {}
+
+  @UseGuards(AuthGuard)
   @Get('/')
   async all() {
     return await this.staffInfraService.getAllTickets();
