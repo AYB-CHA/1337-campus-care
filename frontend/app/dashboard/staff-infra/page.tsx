@@ -5,9 +5,10 @@ import MessagesBox from "./(components)/MessagesBox";
 import FilterBar from "./(components)/FilterBar";
 import NewTicket from "./(components)/NewTicket";
 import Input from "@/components/Input";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import useSWR from "swr";
+import { debounce } from "lodash";
 
 export type TicketType = {
   id: string;
@@ -58,7 +59,9 @@ export default function page() {
                 <Input
                   placeholder="Search"
                   type="text"
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={debounce((e: ChangeEvent<HTMLInputElement>) => {
+                    setSearchQuery(e.target.value);
+                  }, 300)}
                 />
               </div>
               <div>

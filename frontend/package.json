@@ -23,6 +23,7 @@
     "filepond": "^4.30.4",
     "filepond-plugin-image-preview": "^4.6.11",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.268.0",
     "moment": "^2.29.4",
     "next": "13.4.19",
