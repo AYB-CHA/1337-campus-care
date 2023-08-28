@@ -52,7 +52,7 @@ export default function Card({ data, mutator }: CardProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="border rounded bg-white text-sm overflow-hidden group-hover:-translate-y-1 transition-transform">
+      <div className="border rounded bg-white text-sm overflow-hidden">
         <div className="border-b p-4">
           <div className="flex justify-between items-center mb-2">
             <span className=" font-medium">@{data.User.username}</span>
@@ -62,9 +62,9 @@ export default function Card({ data, mutator }: CardProps) {
           </div>
           <h3 className="text-gray-600">{data.title}.</h3>
         </div>
-        <div className="aspect-[14/9] relative">
+        <div className="aspect-[14/9] relative overflow-hidden">
           <img
-            className="h-full w-full absolute object-cover"
+            className="h-full w-full absolute object-cover group-hover:scale-105 transition-transform"
             src={
               data.image
                 ? process.env["NEXT_PUBLIC_BACKEND_BASEURL"] +
@@ -76,7 +76,7 @@ export default function Card({ data, mutator }: CardProps) {
           <div className="absolute top-2 left-2">
             <Tag variant="success">New</Tag>
           </div>
-          <div className="px-2 bg-gradient-to-t bg-grad from-60% from-white to-transparent absolute bottom-0 w-full h-16 flex items-center text-sm text-gray-700">
+          <div className="px-2 bg-gradient-to-t bg-grad from-50% from-zinc-950/40 to-transparent absolute bottom-0 w-full h-16 flex items-center text-sm text-gray-100">
             {data.description}.
           </div>
         </div>

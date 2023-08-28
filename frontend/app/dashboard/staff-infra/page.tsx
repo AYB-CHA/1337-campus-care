@@ -47,6 +47,12 @@ export default function page() {
     { endpoint: "staff-infra", sort, search: searchQuery },
     getTickets
   );
+  const changeHandler = debounce(
+    (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
+      setSearchQuery(e.target.value);
+    },
+    300
+  );
 
   return (
     <div className="flex flex-col grow overflow-hidden">
@@ -59,9 +65,7 @@ export default function page() {
                 <Input
                   placeholder="Search"
                   type="text"
-                  onChange={debounce((e: ChangeEvent<HTMLInputElement>) => {
-                    setSearchQuery(e.target.value);
-                  }, 300)}
+                  onChange={changeHandler}
                 />
               </div>
               <div>

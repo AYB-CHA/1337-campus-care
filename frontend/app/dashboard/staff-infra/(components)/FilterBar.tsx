@@ -32,11 +32,11 @@ export default function FilterBar({
           <DropdownMenuLabel>Sort by</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>
-            <DropdownMenuRadioItem value="asc">
-              Date (Ascending )
-            </DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="desc">
               Date (Descending)
+            </DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="asc">
+              Date (Ascending )
             </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
