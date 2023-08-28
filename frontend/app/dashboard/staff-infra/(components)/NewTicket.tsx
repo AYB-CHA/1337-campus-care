@@ -16,19 +16,45 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { FilePondFile, FileStatus } from "filepond";
+import axios from "@/lib/axios";
+import { isAxiosError } from "axios";
+
 registerPlugin(FilePondPluginImagePreview);
 
 export default function NewTicket() {
   const [files, setFiles] = useState<FilePondFile[]>();
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
-  //   console.log(FileStatus);
-  //   useEffect(() => {
-  //     if (files) console.log(files?.map((item) => item.status));
-  //   }, [files]);
+  async function handelFormSubmission() {
+    try {
+      setLoading(true);
+      setError(null);
+      let image: string | null = null;
+      if (files?.length && files[0].status == FileStatus.PROCESSING_COMPLETE) {
+        image = files[0].serverId;
+      }
+
+      await axios.post("/staff-infra/", { title, description, image });
+      setTitle("");
+      setDescription("");
+      setOpen(false);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status == 400)
+          setError(error.response.data.message[0]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>Add new ticket</Button>
         </DialogTrigger>
@@ -40,8 +66,25 @@ export default function NewTicket() {
               when it's possible.
             </DialogDescription>
           </DialogHeader>
-          <Input placeholder="Title" type="text" />
-          <Input placeholder="Description" type="textarea" />
+          {error && (
+            <div className="text-sm border-l-2 border-red-500 rounded p-4 bg-red-50 text-red-500">
+              {error.charAt(0).toUpperCase() + error.slice(1)}
+            </div>
+          )}
+          <Input
+            placeholder="Title"
+            type="text"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+          <Input
+            placeholder="Description"
+            type="textarea"
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
+          />
           <div>
             <FilePond
               acceptedFileTypes={["image/*"]}
@@ -56,7 +99,9 @@ export default function NewTicket() {
             />
           </div>
           <DialogFooter>
-            <Button>Submit Ticket</Button>
+            <Button loading={loading} onClick={handelFormSubmission}>
+              Submit Ticket
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
