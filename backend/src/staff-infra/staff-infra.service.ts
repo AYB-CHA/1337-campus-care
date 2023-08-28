@@ -30,4 +30,9 @@ export class StaffInfraService {
       data: { title, description, image, user_id },
     });
   }
+  async deleteForUser(id: string, userId: string) {
+    await this.prisma.staffInfraTicket.deleteMany({
+      where: { AND: [{ id: id }, { user_id: userId }] },
+    });
+  }
 }

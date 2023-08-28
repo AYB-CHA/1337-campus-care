@@ -8,6 +8,7 @@ import Input from "@/components/Input";
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import useSWR from "swr";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export type TicketType = {
   id: string;
@@ -52,19 +53,19 @@ export default function page() {
         </div>
       </div>
       <div className="flex grow overflow-hidden">
-        <div className="grow p-8 overflow-auto h-full">
-          <div className="grid grid-cols-1  lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-6 relative min-h-full">
-            {isLoading ? (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                LOADING
-              </div>
-            ) : (
-              tickets?.map((ticket, index) => (
-                <Card key={index} data={ticket} />
-              ))
-            )}
+        {isLoading ? (
+          <div className="min-h-full w-full flex justify-center items-center">
+            <span>Loading...</span>
           </div>
-        </div>
+        ) : (
+          <div className="grow p-8 overflow-auto h-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-6">
+              {tickets?.map((ticket, index) => (
+                <Card key={index} data={ticket} mutator={mutate} />
+              ))}
+            </div>
+          </div>
+        )}
         <MessagesBox />
       </div>
     </div>

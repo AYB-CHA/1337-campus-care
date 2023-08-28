@@ -8,11 +8,5 @@
    @apply border-gray-100 border-[8px] border-double;
    border-left-style: solid;
    border-radius: 50%;
-   animation: spinner-aib1d7 0.75s infinite linear;
-}
-
-@keyframes spinner-aib1d7 {
-   to {
-      transform: rotate(360deg);
-   }
+   animation: spinner-frames 0.75s infinite linear;
 }

@@ -1,15 +1,58 @@
 import Tag from "./Tag";
 import { TicketType } from "../page";
 import moment from "moment";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/DropDown";
+import axios from "@/lib/axios";
 
 type CardProps = {
   data: TicketType;
+  mutator: any;
 };
 
-export default function Card({ data }: CardProps) {
+export default function Card({ data, mutator }: CardProps) {
+  async function handelDeleteClick() {
+    try {
+      await axios.delete("staff-infra/" + data.id);
+      mutator();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
-    <div className="cursor-pointer">
-      <div className="border rounded bg-white text-sm overflow-hidden hover:-translate-y-1 transition-transform">
+    <div className="cursor-pointer relative group">
+      <div className="absolute left-full -translate-x-1/2 -translate-y-1/2 p-2 bg-white border rounded-full z-50 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <MoreVertical size={10} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuLabel>Ticket options</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled>
+              <Pencil className="mr-2 h-4 w-4" />
+              <span>Edit status</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              // todo: disable this button if the user id dose not match the ticket owner id.
+              // disabled={}
+              className="cursor-pointer text-red-500"
+              onClick={handelDeleteClick}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <div className="border rounded bg-white text-sm overflow-hidden group-hover:-translate-y-1 transition-transform">
         <div className="border-b p-4">
           <div className="flex justify-between items-center mb-2">
             <span className=" font-medium">@{data.User.username}</span>
