@@ -13,7 +13,7 @@ export type TicketType = {
   description: string;
   image: string | null;
   title: string;
-  createdAt: string;
+  created_at: string;
   User: {
     username: string;
     id: string;

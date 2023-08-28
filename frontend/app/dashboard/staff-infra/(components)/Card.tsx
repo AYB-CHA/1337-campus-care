@@ -1,5 +1,6 @@
 import Tag from "./Tag";
 import { TicketType } from "../page";
+import moment from "moment";
 
 type CardProps = {
   data: TicketType;
@@ -12,7 +13,9 @@ export default function Card({ data }: CardProps) {
         <div className="border-b p-4">
           <div className="flex justify-between items-center mb-2">
             <span className=" font-medium">@{data.User.username}</span>
-            <span className="text-gray-500 text-xs">Posted 42 minus ago</span>
+            <span className="text-gray-500 text-xs">
+              Posted {moment(data.created_at).fromNow()}
+            </span>
           </div>
           <h3 className="text-gray-600">{data.title}.</h3>
         </div>
