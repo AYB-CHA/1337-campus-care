@@ -15,11 +15,16 @@ import {
 import Button from "@/components/Button";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
-export default function MessagesBox() {
+export default function MessagesBox({
+  state = false,
+  onChange,
+}: {
+  state?: boolean;
+  onChange: (state: boolean) => void;
+}) {
   return (
     <div>
-      <Sheet>
-        <SheetTrigger asChild>{/* <Button>Open</Button> */}</SheetTrigger>
+      <Sheet open={state} onOpenChange={onChange}>
         <SheetContent className="w-full sm:max-w-full sm:w-[700px] p-0">
           <div className="flex flex-col h-full">
             <div className="p-4 text-gray-900 border-b flex items-center justify-between">

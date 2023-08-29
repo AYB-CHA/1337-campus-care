@@ -90,7 +90,6 @@ export default function page() {
             </div>
           </div>
         )}
-        <MessagesBox />
       </div>
     </div>
   );
