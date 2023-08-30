@@ -5,6 +5,17 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
+  updateUserData(
+    firstname: string,
+    lastname: string,
+    avatar: string,
+    id: string,
+  ) {
+    return this.prisma.user.update({
+      data: { firstname, lastname, avatar },
+      where: { id },
+    });
+  }
 
   async findOne(username: string): Promise<User> {
     return this.prisma.user.findFirst({

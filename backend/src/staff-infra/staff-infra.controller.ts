@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { StaffInfraService } from './staff-infra.service';
 import { AuthGuard } from 'src/auth/auth.gaurd';
-import { staffInfraTicketDto } from './staff-infra-dto';
+import { staffInfraTicketDto } from './staff-infra.dto';
 import { Request } from 'express';
 import { User } from '@prisma/client';
 
