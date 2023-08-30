@@ -5,13 +5,12 @@ export default function Alert({
   error: string;
   variant?: "danger" | "success";
 }) {
-  let variantClasses = "";
-  if (variant === "danger")
-    variantClasses = "border-red-500  bg-red-50 text-red-500";
-  if (variant === "success")
-    variantClasses = "border-green-500  bg-green-50 text-green-500";
+  let variants = {
+    danger: "border-red-500 bg-red-50 text-red-500",
+    success: "border-green-500 bg-green-50 text-green-500",
+  };
   return (
-    <div className="text-sm border-l-2 rounded p-4">
+    <div className={`text-sm border-l-2 rounded p-4 ${variants[variant]}`}>
       {error.charAt(0).toUpperCase() + error.slice(1)}
     </div>
   );

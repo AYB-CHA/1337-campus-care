@@ -9,14 +9,11 @@ registerPlugin(FilePondPluginImagePreview);
 
 export default function FileUpload({
   setFiles,
-  files = [],
 }: {
   setFiles?: Dispatch<SetStateAction<FilePondFile[] | undefined>>;
-  files?: string[];
 }) {
   return (
     <FilePond
-      files={files}
       acceptedFileTypes={["image/*"]}
       onupdatefiles={setFiles}
       allowMultiple={false}

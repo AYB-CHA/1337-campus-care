@@ -16,6 +16,7 @@ import axios from "@/lib/axios";
 import { isAxiosError } from "axios";
 import FileUpload from "@/components/FileUpload";
 import { FilePondFile, FileStatus } from "filepond";
+import Alert from "@/components/Alert";
 
 export default function NewTicket({ mutator }: { mutator: any }) {
   const [loading, setLoading] = useState(false);
@@ -63,11 +64,7 @@ export default function NewTicket({ mutator }: { mutator: any }) {
               when it's possible.
             </DialogDescription>
           </DialogHeader>
-          {error && (
-            <div className="text-sm border-l-2 border-red-500 rounded p-4 bg-red-50 text-red-500">
-              {error.charAt(0).toUpperCase() + error.slice(1)}
-            </div>
-          )}
+          {error && <Alert error={error} />}
           <Input
             placeholder="Title"
             type="text"

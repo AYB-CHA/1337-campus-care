@@ -4,6 +4,7 @@
     "firstname",
     "lastname",
     "lucide",
-    "onupdatefiles"
+    "onupdatefiles",
+    "Profilehandler"
   ]
 }

@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 import useSWR from "swr";
 import axios from "@/lib/axios";
-import { AxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import { LogOut, Settings, User } from "lucide-react";
 import { User as UserType } from "@/app/auth/types";
 import {
@@ -28,6 +28,8 @@ import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import FileUpload from "@/components/FileUpload";
 import Input from "@/components/Input";
+import { FilePondFile, FileStatus } from "filepond";
+import Alert from "@/components/Alert";
 
 async function getUser(endpoint: string) {
   let response = await axios.get<UserType>(endpoint);
@@ -43,8 +45,13 @@ export default function Header() {
   const [profileDialog, setProfileDialog] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [files, setFiles] = useState<FilePondFile[]>();
+  const [validationError, setValidationError] = useState<string | null>(null);
 
-  let { data, error } = useSWR<UserType, AxiosError>("/auth/me", getUser);
+  let { data, error, mutate } = useSWR<UserType, AxiosError>(
+    "/auth/me",
+    getUser
+  );
   if (error?.response?.status == 401) logOut();
   else if (error) redirect("/error");
 
@@ -52,6 +59,32 @@ export default function Header() {
     setFirstName(data?.firstname ?? "");
     setLastName(data?.lastname ?? "");
   }, [data]);
+
+  const updateProfileHandler = async () => {
+    let image: string | null = null;
+    if (files?.length && files[0].status == FileStatus.PROCESSING_COMPLETE) {
+      image =
+        process.env["NEXT_PUBLIC_BACKEND_BASEURL"] +
+        "/upload/" +
+        files[0].serverId;
+    }
+
+    try {
+      await axios.put<UserType>("/user", {
+        firstname: firstName,
+        lastname: lastName,
+        avatar: image,
+      });
+      mutate();
+      setValidationError(null);
+      setProfileDialog((state) => !state);
+    } catch (responseError) {
+      if (isAxiosError(responseError)) {
+        if (responseError.response?.status == 400)
+          setValidationError(responseError.response.data.message[0]);
+      }
+    }
+  };
 
   return (
     <div>
@@ -96,6 +129,7 @@ export default function Header() {
                 Here you can change your profile settings.
               </DialogDescription>
             </DialogHeader>
+            <div>{validationError && <Alert error={validationError} />}</div>
             <Input
               placeholder="First name"
               type="text"
@@ -115,10 +149,10 @@ export default function Header() {
               onChange={(e) => setLastName(e.target.value)}
             />
             <div>
-              <FileUpload files={[data?.avatar ?? ""]} />
+              <FileUpload setFiles={setFiles} />
             </div>
             <DialogFooter>
-              <Button>Edit Profile</Button>
+              <Button onClick={updateProfileHandler}>Edit Profile</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
