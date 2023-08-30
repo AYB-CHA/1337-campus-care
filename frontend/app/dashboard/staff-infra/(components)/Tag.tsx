@@ -10,15 +10,15 @@ export default function Tag({ children, variant, onChange = null }: TagProps) {
   const [check, setCheck] = useState(false);
   let variantClass = "";
   if (variant == "success")
-    variantClass = "border-b-green-500 " + (check ? " bg-green-100" : "");
+    variantClass = "border-b-green-500 " + (check ? "bg-green-100" : "");
   if (variant == "warning")
-    variantClass = "border-b-yellow-500 " + (check ? " bg-yellow-100" : "");
+    variantClass = "border-b-yellow-500 " + (check ? "bg-yellow-100" : "");
   if (variant == "danger")
-    variantClass = "border-b-red-500 " + (check ? " bg-red-100" : "");
+    variantClass = "border-b-red-500 " + (check ? "bg-red-100" : "");
   if (variant == "risk")
-    variantClass = "border-b-red-400 " + (check ? " bg-red-100" : "");
+    variantClass = "border-b-red-400 " + (check ? "bg-red-100" : "");
   if (variant == "other")
-    variantClass = "border-b-gray-500 " + (check ? " bg-gray-200" : "");
+    variantClass = "border-b-gray-500 " + (check ? "bg-gray-200" : "");
   return (
     <button
       onClick={() => {

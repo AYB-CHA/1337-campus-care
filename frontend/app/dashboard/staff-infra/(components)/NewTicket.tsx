@@ -10,24 +10,20 @@ import {
   DialogTrigger,
 } from "@/components/Dialog";
 import Input from "@/components/Input";
-import { useEffect, useState } from "react";
-import { FilePond, registerPlugin } from "react-filepond";
-import "filepond/dist/filepond.min.css";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { FilePondFile, FileStatus } from "filepond";
+import { useState } from "react";
+
 import axios from "@/lib/axios";
 import { isAxiosError } from "axios";
-
-registerPlugin(FilePondPluginImagePreview);
+import FileUpload from "@/components/FileUpload";
+import { FilePondFile, FileStatus } from "filepond";
 
 export default function NewTicket({ mutator }: { mutator: any }) {
-  const [files, setFiles] = useState<FilePondFile[]>();
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState<FilePondFile[]>();
 
   async function handelFormSubmission() {
     try {
@@ -87,17 +83,7 @@ export default function NewTicket({ mutator }: { mutator: any }) {
             }}
           />
           <div>
-            <FilePond
-              acceptedFileTypes={["image/*"]}
-              onupdatefiles={setFiles}
-              allowMultiple={false}
-              server={
-                process.env["NEXT_PUBLIC_BACKEND_BASEURL"] + "/upload/file"
-              }
-              name="image"
-              labelIdle="Drag & Drop an image if available."
-              credits={false}
-            />
+            <FileUpload setFiles={setFiles} />
           </div>
           <DialogFooter>
             <Button loading={loading} onClick={handelFormSubmission}>
