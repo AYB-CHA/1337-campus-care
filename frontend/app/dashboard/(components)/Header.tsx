@@ -1,13 +1,13 @@
 "use client";
 
 import Logo from "../../../components/Logo";
-import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 import useSWR from "swr";
 import axios from "@/lib/axios";
 import { AxiosError, isAxiosError } from "axios";
 import { LogOut, Settings, User } from "lucide-react";
 import { User as UserType } from "@/app/auth/types";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/DropDown";
+
 import {
   Dialog,
   DialogContent,
@@ -24,22 +25,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/Dialog";
+
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import FileUpload from "@/components/FileUpload";
 import Input from "@/components/Input";
 import { FilePondFile, FileStatus } from "filepond";
 import Alert from "@/components/Alert";
-
-async function getUser(endpoint: string) {
-  let response = await axios.get<UserType>(endpoint);
-  return response.data;
-}
-
-function logOut() {
-  Cookies.remove("access_token");
-  redirect("/");
-}
+import { getUser, logOut } from "@/app/auth/auth-functions";
 
 export default function Header() {
   const [profileDialog, setProfileDialog] = useState(false);

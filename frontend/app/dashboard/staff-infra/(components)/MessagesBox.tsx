@@ -2,26 +2,81 @@
 import { MessageSquare, Send } from "lucide-react";
 import OtherMessage from "./OtherMessage";
 import MyMessage from "./MyMessage";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/Sheet";
-import Button from "@/components/Button";
-import { Label } from "@radix-ui/react-dropdown-menu";
+import { Sheet, SheetContent } from "@/components/Sheet";
+import Cookies from "js-cookie";
+
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { getUser } from "@/app/auth/auth-functions";
+import { User } from "@/app/auth/types";
+
+import { io } from "socket.io-client";
+
+export type MessageType = {
+  id: string;
+  sender_id: string;
+  receiver_id: string;
+  ticket_id: string;
+  message: string;
+  type: string;
+  created_at: Date;
+  updated_at: Date;
+};
+
+type PropsType = {
+  state?: boolean;
+  ticketId: string;
+  onChange: (state: boolean) => void;
+};
+
+const socket = io("http://localhost:4000", {
+  extraHeaders: {
+    Authorization: "Bearer " + Cookies.get("access_token") ?? "",
+  },
+});
 
 export default function MessagesBox({
   state = false,
   onChange,
-}: {
-  state?: boolean;
-  onChange: (state: boolean) => void;
-}) {
+  ticketId,
+}: PropsType) {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  let { data } = useSWR<User>("/auth/me", getUser);
+
+  useEffect(() => {
+    socket.emit("thread init", { ticket_id: ticketId });
+    socket.on("thread init", (data: MessageType[]) => {
+      setMessages(data);
+    });
+  }, []);
+
+  function handleFormSubmit() {
+    socket.emit(
+      "new thread message",
+      { ticket_id: ticketId, message },
+      (message: MessageType) => {
+        setMessages([...messages, message]);
+      }
+    );
+
+    setMessage("");
+  }
+
+  let messagesGroup: MessageType[][] = [];
+  let oneUserMessages: MessageType[] = [];
+  let lastUserId = "";
+  messages.forEach((message) => {
+    if (lastUserId === message.sender_id) {
+      oneUserMessages.push(message);
+    } else {
+      messagesGroup.push(oneUserMessages);
+      oneUserMessages.length = 0;
+      lastUserId = message.sender_id;
+      oneUserMessages.push(message);
+    }
+  });
+
   return (
     <div>
       <Sheet open={state} onOpenChange={onChange}>
@@ -34,19 +89,29 @@ export default function MessagesBox({
               </div>
             </div>
             <div className="grow border-b p-4 flex flex-col gap-4 bg-gray-50 overflow-auto">
-              <OtherMessage />
-              <MyMessage />
+              {}
+              {messagesGroup.map((messages: MessageType[], id: number) => {
+                return <MyMessage messages={messages} key={id} />;
+              })}
             </div>
-            <div className="bg-white p-2 flex items-center gap-2">
+            <form
+              className="bg-white p-2 flex items-center gap-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleFormSubmit();
+              }}
+            >
               <input
                 className="text-sm w-full focus:outline-none"
                 type="text"
                 placeholder="Type..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
               />
               <div className="rounded-full flex justify-center items-center h-10 w-10 text-gray-500 cursor-pointer hover:text-primary">
                 <Send size={18} />
               </div>
-            </div>
+            </form>
           </div>
         </SheetContent>
       </Sheet>

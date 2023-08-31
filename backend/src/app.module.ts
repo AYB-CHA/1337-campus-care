@@ -7,6 +7,7 @@ import { UploadModule } from './upload/upload.module';
 import { StaffInfraModule } from './staff-infra/staff-infra.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { join } from 'path';
     }),
     UploadModule,
     StaffInfraModule,
+    ChatModule,
   ],
 })
 export class AppModule {}

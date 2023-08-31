@@ -92,7 +92,7 @@ export default function Card({ data, mutator }: CardProps) {
           </div>
         </div>
       </div>
-      <MessagesBox state={chat} onChange={setChat} />
+      <MessagesBox state={chat} onChange={setChat} ticketId={data.id} />
     </div>
   );
 }

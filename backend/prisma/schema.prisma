@@ -52,10 +52,12 @@ model ChatMessages {
   Sender    User   @relation("sender_relation", fields: [sender_id], references: [id])
   sender_id String
 
-  Receiver    User   @relation("receiver_relation", fields: [receiver_id], references: [id])
-  receiver_id String
+  Receiver    User?   @relation("receiver_relation", fields: [receiver_id], references: [id])
+  receiver_id String?
 
   ticket_id String?
+
+  message String @default("")
 
   type       ChatMessagesType @default(DM)
   created_at DateTime         @default(now())
