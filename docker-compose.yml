@@ -5,6 +5,9 @@ services:
     image: postgres:bullseye
     container_name: postgres
     restart: always
+    # todo: remeve this  (it's for pgAdmin)
+    ports:
+      - 5432:5432
     environment:
       #! There is a bug when this variable.
       #! Now it's default.

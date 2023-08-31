@@ -20,6 +20,9 @@ model User {
   staff_infar_tickets StaffInfraTicket[]
   created_at          DateTime           @default(now())
   updated_at          DateTime           @updatedAt
+
+  SenderMessages   ChatMessages[] @relation("sender_relation")
+  ReceiverMessages ChatMessages[] @relation("receiver_relation")
 }
 
 model StaffInfraTicket {
@@ -41,4 +44,25 @@ enum StaffInfraTicketStatus {
   WONT_FIX
   DUBLICATE
   IRRELEEVANT
+}
+
+model ChatMessages {
+  id String @unique @default(uuid())
+
+  Sender    User   @relation("sender_relation", fields: [sender_id], references: [id])
+  sender_id String
+
+  Receiver    User   @relation("receiver_relation", fields: [receiver_id], references: [id])
+  receiver_id String
+
+  ticket_id String?
+
+  type       ChatMessagesType @default(DM)
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
+}
+
+enum ChatMessagesType {
+  DM
+  INFRA_TICKET
 }
