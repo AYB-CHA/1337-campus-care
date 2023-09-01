@@ -6,10 +6,18 @@ type buttonProps = {
   loading?: boolean;
   icon?: ReactNode;
   variant?: "primary" | "flat";
+  className: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default forwardRef(function (
-  { children, loading = false, icon, variant, ...props }: buttonProps,
+  {
+    children,
+    loading = false,
+    icon,
+    variant,
+    className,
+    ...props
+  }: buttonProps,
   forwardedRef: LegacyRef<HTMLButtonElement>
 ) {
   variant ??= "primary";
@@ -25,7 +33,7 @@ export default forwardRef(function (
         className={`inline-flex items-center justify-center rounded
     ring-offset-background transition-colors
     disabled:pointer-events-none disabled:opacity-50
-    px-4 py-[9px] cursor-pointer text-sm select-none border focus:border-primary-200 focus:outline-none ${classes} relative`}
+    px-4 py-[9px] cursor-pointer text-sm select-none border focus:border-primary-200 focus:outline-none ${classes} relative ${className}`}
         ref={forwardedRef}
         {...props}
       >

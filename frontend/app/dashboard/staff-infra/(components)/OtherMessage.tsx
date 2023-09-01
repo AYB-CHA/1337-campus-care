@@ -1,4 +1,10 @@
+import Button from "@/components/Button";
 import { MessageType } from "./MessagesBox";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/HoverCard";
 
 export default function OtherMessage({
   messages,
@@ -8,12 +14,39 @@ export default function OtherMessage({
   return (
     <div className="flex">
       <div className="pt-2">
-        <div className="flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
-          <img
-            className="aspect-square h-full w-full cursor-pointer"
-            src={messages[0]?.Sender.avatar}
-          />
-        </div>
+        <HoverCard>
+          <HoverCardTrigger>
+            <div className="flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+              <img
+                className="aspect-square h-full w-full cursor-pointer"
+                src={messages[0]?.Sender.avatar}
+              />
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent align="start" className="text-sm">
+            <div className="flex gap-3 mb-3">
+              <div className="flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <img
+                  className="aspect-square h-full w-full cursor-pointer"
+                  src={messages[0]?.Sender.avatar}
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm text-gray-800 font-medium mt-px mb-1">
+                  @{messages[0]?.Sender.username}
+                </span>
+                <div className="text-xs">
+                  <span>Ayoub</span> <span>Chaaoui</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <Button className="w-full text-xs py-1" variant="flat">
+                Send a DM
+              </Button>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
       </div>
       <div className="ml-2">
         <div className="mb-1">
