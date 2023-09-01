@@ -14,13 +14,15 @@ import {
 import axios from "@/lib/axios";
 import MessagesBox from "./MessagesBox";
 import { useState } from "react";
+import { Socket } from "socket.io-client";
 
 type CardProps = {
   data: TicketType;
+  socket: Socket;
   mutator: any;
 };
 
-export default function Card({ data, mutator }: CardProps) {
+export default function Card({ data, mutator, socket }: CardProps) {
   const [chat, setChat] = useState(false);
   async function handelDeleteClick() {
     try {
@@ -30,6 +32,7 @@ export default function Card({ data, mutator }: CardProps) {
       console.log(error);
     }
   }
+
   return (
     <div>
       <div
@@ -92,7 +95,14 @@ export default function Card({ data, mutator }: CardProps) {
           </div>
         </div>
       </div>
-      <MessagesBox state={chat} onChange={setChat} ticketId={data.id} />
+      {chat && (
+        <MessagesBox
+          state={chat}
+          onChange={setChat}
+          ticketId={data.id}
+          socket={socket}
+        />
+      )}
     </div>
   );
 }

@@ -5,15 +5,17 @@ import {
   OnGatewayConnection,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
 import { User } from '@prisma/client';
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
 import { UsersService } from 'src/users/users.service';
 import { ChatService } from './chat.service';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway implements OnGatewayConnection {
-  user: User | null;
+  @WebSocketServer() server: Server;
+
   constructor(
     private readonly jwt: JwtService,
     private readonly userService: UsersService,
@@ -21,11 +23,13 @@ export class ChatGateway implements OnGatewayConnection {
   ) {}
 
   async handleConnection(client: Socket) {
-    const [type, token] =
-      client.handshake.headers.authorization?.split(' ') ?? [];
-    const payload = await this.jwt.verifyAsync(token);
-    this.user = await this.userService.findOne(payload.username);
-    if (type != 'Bearer' || !this.user) client.disconnect();
+    try {
+      const payload = await this.getUserPayload(client);
+      const user = await this.userService.findOne(payload.username);
+      if (payload.type != 'Bearer' || !user) throw Error();
+    } catch (error) {
+      client.disconnect();
+    }
   }
 
   // now we will work only on the staff ticket.
@@ -45,10 +49,18 @@ export class ChatGateway implements OnGatewayConnection {
     @MessageBody() data: { ticket_id: string; message: string },
     @ConnectedSocket() client: Socket,
   ) {
-    return await this.chatService.newTicketMessage(
+    let { id } = await this.getUserPayload(client);
+    let message = await this.chatService.newTicketMessage(
       data.message,
       data.ticket_id,
-      this.user.id,
+      id,
     );
+    this.server.emit('new thread message', message);
+  }
+
+  async getUserPayload(client: Socket) {
+    const [type, token] =
+      client.handshake.headers.authorization?.split(' ') ?? [];
+    return { ...(await this.jwt.verifyAsync(token)), type };
   }
 }

@@ -1,24 +1,21 @@
 "use client";
-import { MessageSquare, Send } from "lucide-react";
 import OtherMessage from "./OtherMessage";
 import MyMessage from "./MyMessage";
 import { Sheet, SheetContent } from "@/components/Sheet";
-import Cookies from "js-cookie";
 
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { getUser } from "@/app/auth/auth-functions";
 import { User } from "@/app/auth/types";
 
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
+import MessageInput from "./MessageInput";
 
 export type MessageType = {
   id: string;
   sender_id: string;
-  receiver_id: string;
   ticket_id: string;
   message: string;
-  type: string;
   created_at: Date;
   updated_at: Date;
 };
@@ -26,56 +23,63 @@ export type MessageType = {
 type PropsType = {
   state?: boolean;
   ticketId: string;
+  socket: Socket;
   onChange: (state: boolean) => void;
 };
 
-const socket = io("http://localhost:4000", {
-  extraHeaders: {
-    Authorization: "Bearer " + Cookies.get("access_token") ?? "",
-  },
-});
+function formatMessages(messages: MessageType[]) {
+  let messagesGroup: MessageType[][] = [];
+  let group: MessageType[] = [];
+
+  messages.forEach((message) => {
+    if (!group.length) {
+      group.push(message);
+    } else {
+      if (group[0].sender_id == message.sender_id) group.push(message);
+      else {
+        messagesGroup.push(group);
+        group = [];
+        group.push(message);
+      }
+    }
+  });
+  if (group.length != 0) messagesGroup.push(group);
+  return messagesGroup;
+}
 
 export default function MessagesBox({
   state = false,
   onChange,
   ticketId,
+  socket,
 }: PropsType) {
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<MessageType[]>([]);
   let { data } = useSWR<User>("/auth/me", getUser);
 
-  useEffect(() => {
-    socket.emit("thread init", { ticket_id: ticketId });
-    socket.on("thread init", (data: MessageType[]) => {
-      setMessages(data);
-    });
-  }, []);
-
-  function handleFormSubmit() {
-    socket.emit(
-      "new thread message",
-      { ticket_id: ticketId, message },
-      (message: MessageType) => {
-        setMessages([...messages, message]);
-      }
-    );
-
-    setMessage("");
+  function initMessages(data: MessageType[]) {
+    setMessages(data);
+  }
+  function newMessage(data: MessageType) {
+    if (data.ticket_id === ticketId)
+      setMessages((oldData) => [...oldData, data]);
   }
 
-  let messagesGroup: MessageType[][] = [];
-  let oneUserMessages: MessageType[] = [];
-  let lastUserId = "";
-  messages.forEach((message) => {
-    if (lastUserId === message.sender_id) {
-      oneUserMessages.push(message);
-    } else {
-      messagesGroup.push(oneUserMessages);
-      oneUserMessages.length = 0;
-      lastUserId = message.sender_id;
-      oneUserMessages.push(message);
-    }
-  });
+  useEffect(() => {
+    socket.emit("thread init", { ticket_id: ticketId });
+
+    socket.on("thread init", initMessages);
+    socket.on("new thread message", newMessage);
+
+    return () => {
+      socket.off("thread init", initMessages);
+      socket.off("new thread message", initMessages);
+    };
+  }, []);
+
+  function handleFormSubmit(message: string) {
+    if (message.length)
+      socket.emit("new thread message", { ticket_id: ticketId, message });
+  }
 
   return (
     <div>
@@ -89,29 +93,17 @@ export default function MessagesBox({
               </div>
             </div>
             <div className="grow border-b p-4 flex flex-col gap-4 bg-gray-50 overflow-auto">
-              {}
-              {messagesGroup.map((messages: MessageType[], id: number) => {
-                return <MyMessage messages={messages} key={id} />;
-              })}
+              {formatMessages(messages).map(
+                (messagesOfUser: MessageType[], id: number) => {
+                  return messagesOfUser[0]?.sender_id === data?.id ? (
+                    <MyMessage messages={messagesOfUser} key={id} />
+                  ) : (
+                    <OtherMessage messages={messagesOfUser} key={id} />
+                  );
+                }
+              )}
             </div>
-            <form
-              className="bg-white p-2 flex items-center gap-2"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleFormSubmit();
-              }}
-            >
-              <input
-                className="text-sm w-full focus:outline-none"
-                type="text"
-                placeholder="Type..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-              <div className="rounded-full flex justify-center items-center h-10 w-10 text-gray-500 cursor-pointer hover:text-primary">
-                <Send size={18} />
-              </div>
-            </form>
+            <MessageInput handleFormSubmit={handleFormSubmit} />
           </div>
         </SheetContent>
       </Sheet>

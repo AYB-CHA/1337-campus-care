@@ -1,4 +1,10 @@
-export default function OtherMessage({ message }: { message: string }) {
+import { MessageType } from "./MessagesBox";
+
+export default function OtherMessage({
+  messages,
+}: {
+  messages: MessageType[];
+}) {
   return (
     <div className="flex">
       <div className="pt-2">
@@ -14,16 +20,16 @@ export default function OtherMessage({ message }: { message: string }) {
           <span className="text-xs text-gray-600">@achaaoui</span>
         </div>
         <div className="flex gap-1 flex-col text-sm">
-          <div className="bg-white rounded-lg rounded-tl-none border p-2 w-fit">
-            {message}
-          </div>
-          {/* <div className="bg-white rounded-lg rounded-tl-none border p-2  w-fit">
-            this is another message that is going to be
-          </div>
-          <div className="bg-white rounded-lg rounded-tl-none border p-2  w-fit">
-            followed by this long message that is just a filling, let's see how
-            its going to do on line break. well that looks cool tbh.
-          </div> */}
+          {messages.map((message: MessageType, id: number) => {
+            return (
+              <div
+                className="bg-white rounded-lg rounded-tl-none border p-2 w-fit"
+                key={id}
+              >
+                {message.message}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

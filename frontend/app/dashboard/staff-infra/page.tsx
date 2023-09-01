@@ -9,6 +9,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import useSWR from "swr";
 import { debounce } from "lodash";
+import { io } from "socket.io-client";
+import Cookies from "js-cookie";
 
 export type TicketType = {
   id: string;
@@ -35,10 +37,15 @@ async function getTickets(options: TicketRequestType) {
   return response.data;
 }
 
+const socket = io("http://localhost:4000", {
+  extraHeaders: {
+    Authorization: "Bearer " + Cookies.get("access_token") ?? "",
+  },
+});
+
 export default function page() {
   const [sort, setSort] = useState<string>("desc");
   const [searchQuery, setSearchQuery] = useState("");
-
   const {
     data: tickets,
     isLoading,
@@ -85,7 +92,12 @@ export default function page() {
           <div className="grow p-8 overflow-auto h-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-6">
               {tickets?.map((ticket, index) => (
-                <Card key={index} data={ticket} mutator={mutate} />
+                <Card
+                  key={index}
+                  data={ticket}
+                  mutator={mutate}
+                  socket={socket}
+                />
               ))}
             </div>
           </div>
