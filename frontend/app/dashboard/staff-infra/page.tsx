@@ -1,7 +1,6 @@
 "use client";
 import Header from "../(components)/Header";
 import Card from "./(components)/Card";
-import MessagesBox from "./(components)/MessagesBox";
 import FilterBar from "./(components)/FilterBar";
 import NewTicket from "./(components)/NewTicket";
 import Input from "@/components/Input";

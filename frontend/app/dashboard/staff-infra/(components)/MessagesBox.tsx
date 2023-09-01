@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { getUser } from "@/app/auth/auth-functions";
 import { User } from "@/app/auth/types";
 
-import { Socket, io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import MessageInput from "./MessageInput";
 
 export type MessageType = {
@@ -18,6 +18,11 @@ export type MessageType = {
   message: string;
   created_at: Date;
   updated_at: Date;
+  Sender: {
+    avatar: string;
+    id: string;
+    username: string;
+  };
 };
 
 type PropsType = {
@@ -59,6 +64,7 @@ export default function MessagesBox({
   function initMessages(data: MessageType[]) {
     setMessages(data);
   }
+
   function newMessage(data: MessageType) {
     if (data.ticket_id === ticketId)
       setMessages((oldData) => [...oldData, data]);

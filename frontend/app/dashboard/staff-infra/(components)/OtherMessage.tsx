@@ -11,13 +11,15 @@ export default function OtherMessage({
         <div className="flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
           <img
             className="aspect-square h-full w-full cursor-pointer"
-            src="https://avatars.githubusercontent.com/u/124599?v=4"
+            src={messages[0]?.Sender.avatar}
           />
         </div>
       </div>
       <div className="ml-2">
         <div className="mb-1">
-          <span className="text-xs text-gray-600">@achaaoui</span>
+          <span className="text-xs text-gray-600">
+            @{messages[0]?.Sender.username}
+          </span>
         </div>
         <div className="flex gap-1 flex-col text-sm">
           {messages.map((message: MessageType, id: number) => {

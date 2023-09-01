@@ -5,12 +5,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ChatService {
   constructor(private readonly prisma: PrismaService) {}
 
-  newTicketMessage(message: string, ticket_id: string, id: string) {
-    return this.prisma.infraTicketChatMessages.create({
+  async newTicketMessage(message: string, ticket_id: string, id: string) {
+    return await this.prisma.infraTicketChatMessages.create({
       data: {
         sender_id: id,
         message: message,
         ticket_id,
+      },
+      include: {
+        Sender: { select: { username: true, id: true, avatar: true } },
       },
     });
   }
@@ -20,6 +23,9 @@ export class ChatService {
       where: { ticket_id: id },
       orderBy: {
         created_at: 'asc',
+      },
+      include: {
+        Sender: { select: { username: true, id: true, avatar: true } },
       },
       take: 20,
     });
